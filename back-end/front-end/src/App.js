@@ -9,12 +9,12 @@ function App() {
   const [existData, setExistData] = useState({});
 
   useEffect(() => {
-    fetch('http://localhost:5000/sectors')
+    fetch('/sectors')
       .then((res) => res.json())
       .then((res) => setSectors(res.responseParent))
       .catch((err) => console.log({ err }))
 
-    fetch('http://localhost:5000/sectors')
+    fetch('/sectors')
       .then((res) => res.json())
       .then((res) => { if (res.response) setExistData(res.response) })
       .catch((err) => console.log({ err }))

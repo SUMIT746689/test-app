@@ -27,7 +27,7 @@ userRoute.post('/', sessionCheck, async (req, res, next) => {
 
     if (name && selector_id && agree_of_terms) {
 
-      //if user have id to update
+      //if user have id existing
       if (_id) {
         const response = await User.findByIdAndUpdate(_id, {
           name,

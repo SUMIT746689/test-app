@@ -18,7 +18,7 @@ export const UserInfo = ({ sectors, type, existData = {}, userId, setUserId, set
 
     if (userId) data["_id"] = userId;
 
-    fetch('http://localhost:5000/users', {
+    fetch('/users', {
       method: `POST`,
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
