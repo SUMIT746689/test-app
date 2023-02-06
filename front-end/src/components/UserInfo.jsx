@@ -1,7 +1,7 @@
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export const UserInfo = ({ sectors, type, existingData, userId, setUserId, setExistData }) => {
+export const UserInfo = ({ sectors, type, existData = {}, userId, setUserId, setExistData }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,17 +32,23 @@ export const UserInfo = ({ sectors, type, existingData, userId, setUserId, setEx
             position: toast.POSITION.TOP_RIGHT,
             autoClose: 2000
           });
-
           throw new Error('failed to update');
-
         }
 
-        setExistData(res.response)
-        e.target.name.value = res.response?.name
-        e.target.selectors.value = res.response?.selector_id
-        e.target.checkbox.checked = res.response?.agree_of_terms
+        setExistData(res.response);
+
+        //update with getting user information
+        e.target.name.value = ''
+        e.target.selectors.value = ''
+        e.target.checkbox.checked = false
+
+        // e.target.name.value = res.response?.name
+        // e.target.selectors.value = res.response?.selector_id
+        // e.target.checkbox.checked = res.response?.agree_of_terms
+
         if (res.response?._id) setUserId(() => res.response._id)
 
+        //success message
         toast.success('upload Successfully', {
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 2000
@@ -56,7 +62,7 @@ export const UserInfo = ({ sectors, type, existingData, userId, setUserId, setEx
   return <>
     <ToastContainer />
     <div className="w-full max-w-lg">
-      <div className=" shadow-md text-lg md:text-xl font-medium text-center bg-white py-2 mb-2 uppercase">{(type||'') + ' user info'}</div>
+      <div className=" shadow-md text-lg md:text-xl font-medium text-center bg-white py-2 mb-2 uppercase">{(type === "edit" ?  existData.keys?.length ? type: 'create' : '') + ' user info'}</div>
       <form
         onSubmit={handleSubmit}
         className="bg-white shadow-md rounded px-2 xs:px-8 pt-6 pb-8 mb-4 duration-150 hover:scale-[1.005]">
@@ -144,7 +150,7 @@ export const UserInfo = ({ sectors, type, existingData, userId, setUserId, setEx
                 type="text"
                 required={true}
                 disabled={true}
-                value={existingData?.name}
+                value={existData?.name}
               />
             </div>
             <div className="mb-6 text-sm md:text-base">
@@ -160,7 +166,7 @@ export const UserInfo = ({ sectors, type, existingData, userId, setUserId, setEx
                 multiple=""
                 size="6"
                 required={true}
-                value={existingData?.selector_id}
+                value={existData?.selector_id}
                 disabled={true}
               >
                 {/* import sectors */}
@@ -174,7 +180,7 @@ export const UserInfo = ({ sectors, type, existingData, userId, setUserId, setEx
                 required={true}
                 disabled={true}
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
-                checked={existingData?.agree_of_terms}
+                checked={existData?.agree_of_terms}
               />
               <label
                 htmlFor="checkbox"

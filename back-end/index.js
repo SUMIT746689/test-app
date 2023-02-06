@@ -10,12 +10,14 @@ import sectorRoute from "./router/sectors.js";
 import session from "express-session";
 
 const app = express();
+if (process.env.NODE_ENV !== 'production') dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+console.log(process.env.MONGODB_URL)
 //connect to mongodb atlas database
-mongoose.connect("mongodb+srv://mehedihasan:mehedihasan@cluster0.n565d6s.mongodb.net/test-exam?retryWrites=true&w=majority")
+mongoose.connect(process.env.MONGODB_URL)
   .then((res) => { console.log('connect successfully') })
   .catch((err) => { console.log({ err }) });
 // mongoose.set('strictQuery', true);
@@ -35,10 +37,6 @@ const sessionObj = {
 }
 
 const PORT = process.env.PORT || 5000;
-
-if (process.env.NODE_ENV !== 'production') {
-  dotenv.config({ path: __dirname + '/.env' });
-}
 
 // app.use('/some-route', require(path.join(__dirname, 'api', 'routes', 'route.js')));
 

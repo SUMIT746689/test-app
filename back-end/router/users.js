@@ -10,7 +10,7 @@ userRoute.get("/", async (req, res, next) => {
     if (req.session.user_id) {
       const response = await User.findById(req.session.user_id)
 
-      res.status(200).json({ response });
+      return res.status(200).json({ response });
     }
     res.status(404).json({ err: "no user founds" });
   }
@@ -19,6 +19,7 @@ userRoute.get("/", async (req, res, next) => {
   }
 });
 
+
 userRoute.post('/', sessionCheck, async (req, res, next) => {
   try {
 
@@ -26,7 +27,7 @@ userRoute.post('/', sessionCheck, async (req, res, next) => {
 
     if (name && selector_id && agree_of_terms) {
 
-      //if 
+      //if user have id to update
       if (_id) {
         const response = await User.findByIdAndUpdate(_id, {
           name,
@@ -37,23 +38,22 @@ userRoute.post('/', sessionCheck, async (req, res, next) => {
         return res.status(200).json({ response: response });
       };
 
+      //new user info stored in database 
       const selectors = new User({
         name,
         agree_of_terms,
         selector_id
       })
-      const response = await selectors.save()
-      console.log({response});
+      const response = await selectors.save();
+
       // set session for users
       req.session.authenticated = true;
       req.session.user_id = response._id;
       req.session.save();
-      console.log(req.session)
 
       res.status(200).json({ response });
     }
     else res.status(404).json({ err: 'Please fill all required fields' });
-
   }
   catch (err) {
     res.status(500).json({ err });

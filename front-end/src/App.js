@@ -12,8 +12,12 @@ function App() {
       .then((res) => res.json())
       .then((res) => setSectors(res.responseParent))
       .catch((err) => console.log({ err }))
-  },
-    [])
+
+    fetch('http://localhost:5000/sectors')
+      .then((res) => res.json())
+      .then((res) => { if (res.response) setExistData(res.response) })
+      .catch((err) => console.log({ err }))
+  }, [])
 
   const data = []
   sectors?.forEach((section) => {
@@ -37,7 +41,7 @@ function App() {
       <div className=" text-md text-sky-600 w-full md:w-screen md:h-screen flex justify-center items-center bg-slate-100 p-4 ">
         <div className='flex flex-col md:flex-row gap-6 justify-center'>
           <UserInfo sectors={data} type="edit" userId={userId} setUserId={setUserId} setExistData={setExistData} />
-          <UserInfo sectors={data} existingData={existData} />
+          <UserInfo sectors={data} existData={existData} />
         </div>
       </div>
     </>
