@@ -39,9 +39,9 @@ const sessionObj = {
 const PORT = process.env.PORT || 5000;
 
 // app.use('/some-route', require(path.join(__dirname, 'api', 'routes', 'route.js')));
-
+console.log(path.join(__dirname, '../front-end', 'build'))
 // static files (build of your frontend)
-if (process.env.NODE_ENV === 'production') {
+if (process.env.VERCEL_ENV === 'production') {
   sessionObj.cookie = { secure: true };
   app.use(express.static(path.join(__dirname, '../front-end', 'build')));
   app.get('/*', (req, res) => {
