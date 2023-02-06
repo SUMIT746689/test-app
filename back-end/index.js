@@ -29,19 +29,25 @@ app.use(bodyParser.json({ type: 'application/json' }));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const sessionObj = {
-  secret: 'keyboard cat',
+  secret: 'mypassword',
   proxy: true,
   resave: true,
   saveUninitialized: true,
-  cookie: {},
+  cookie: {maxAge:60000},
 }
 
 const PORT = process.env.PORT || 5000;
 
+app.use(session(sessionObj));
+
+app.use('/users', userRoute);
+app.use('/sectors', sectorRoute);
+
 // app.use('/some-route', require(path.join(__dirname, 'api', 'routes', 'route.js')));
 console.log(path.join(__dirname, '../front-end', 'build'))
-// static files (build of your frontend)
-if (process.env.VERCEL_ENV === 'production') {
+
+// static files for frontend
+if (process.env.VERCEL_ENV !== 'production') {
   sessionObj.cookie = { secure: true };
   app.use(express.static(path.join(__dirname, '../front-end', 'build')));
   app.get('/*', (req, res) => {
@@ -49,9 +55,6 @@ if (process.env.VERCEL_ENV === 'production') {
   })
 }
 
-app.use(session(sessionObj));
 
-app.use('/users', userRoute);
-app.use('/sectors', sectorRoute);
 
 app.listen(PORT, () => console.log(`listening at PORT : ${PORT}`));
