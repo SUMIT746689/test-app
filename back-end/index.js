@@ -33,12 +33,10 @@ const sessionObj = {
   proxy: true,
   resave: true,
   saveUninitialized: true,
-  cookie: {maxAge:60000},
+  cookie: { maxAge: 60000 },
 }
 
 const PORT = process.env.PORT || 5000;
-
-app.use(session(sessionObj));
 
 app.use('/users', userRoute);
 app.use('/sectors', sectorRoute);
@@ -47,13 +45,16 @@ app.use('/sectors', sectorRoute);
 console.log(path.join(__dirname, '../front-end', 'build'))
 
 // static files for frontend
-if (process.env.VERCEL_ENV !== 'production') {
-  sessionObj.cookie = { secure: true };
-  app.use(express.static(path.join(__dirname, '../front-end', 'build')));
-  app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../front-end', 'build', 'index.html'));
-  })
-}
+// if (process.env.VERCEL_ENV !== 'production') {
+sessionObj.cookie = { secure: true };
+app.use(session(sessionObj));
+
+app.use(express.static(path.join(__dirname, '../front-end', 'build')));
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../front-end', 'build', 'index.html'));
+})
+// }
+
 
 
 
