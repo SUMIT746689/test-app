@@ -6,11 +6,13 @@ const userRoute = express.Router();
 
 userRoute.get("/", async (req, res, next) => {
   try {
-    console.log({ req: req.body })
-    // const selectors = new Sector({name:'mehedi'})
-    // const response = await selectors.save()
+    // console.log({ re})
+    if (req.session.user_id) {
+      const response = await User.findById(req.session.user_id)
 
-    res.status(200).json({ response: "" });
+      res.status(200).json({ response });
+    }
+    res.status(404).json({ err: "no user founds" });
   }
   catch (err) {
     res.status(500).json({ err });
@@ -41,9 +43,10 @@ userRoute.post('/', sessionCheck, async (req, res, next) => {
         selector_id
       })
       const response = await selectors.save()
-
+      console.log({response});
       // set session for users
       req.session.authenticated = true;
+      req.session.user_id = response._id;
       req.session.save();
       console.log(req.session)
 

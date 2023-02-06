@@ -56,12 +56,12 @@ export const UserInfo = ({ sectors, type, existingData, userId, setUserId, setEx
   return <>
     <ToastContainer />
     <div className="w-full max-w-lg">
-      <div className=" shadow-md text-lg md:text-xl text-center bg-white py-2 mb-2 uppercase">{(type||'') + ' user info'}</div>
+      <div className=" shadow-md text-lg md:text-xl font-medium text-center bg-white py-2 mb-2 uppercase">{(type||'') + ' user info'}</div>
       <form
         onSubmit={handleSubmit}
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 duration-150 hover:scale-[1.005]">
-        <div className="text-center py-2 font-semibold md:text-lg h-16 capitalize">
-          {type === "current" ?
+        className="bg-white shadow-md rounded px-2 xs:px-8 pt-6 pb-8 mb-4 duration-150 hover:scale-[1.005]">
+        <div className="text-center py-2 md:text-lg h-16 capitalize">
+          {type === "edit" ?
             `Please enter your name and pick the Sectors you are currently
           involved in.`:
             'Databases Stored User Information'
