@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { UserInfo } from './components/UserInfo';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
 
@@ -38,12 +39,21 @@ function App() {
 
   return (
     <>
-      <div className=" text-md text-sky-600 w-full md:w-screen md:h-screen flex justify-center items-center bg-slate-100 p-4 ">
-        <div className='flex flex-col md:flex-row gap-6 justify-center'>
-          <UserInfo sectors={data} type="edit" userId={userId} setUserId={setUserId} setExistData={setExistData} />
-          <UserInfo sectors={data} existData={existData} />
-        </div>
-      </div>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={
+            <>
+              <div className=" text-md text-sky-600 w-full md:w-screen md:h-screen flex justify-center items-center bg-slate-100 p-4 ">
+                <div className='flex flex-col md:flex-row gap-6 justify-center'>
+                  <UserInfo sectors={data} type="edit" userId={userId} setUserId={setUserId} setExistData={setExistData} />
+                  <UserInfo sectors={data} existData={existData} />
+                </div>
+              </div>
+            </>
+          }
+          />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }
