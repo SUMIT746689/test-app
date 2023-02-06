@@ -17,23 +17,21 @@ userRoute.get("/", async (req, res, next) => {
   }
 });
 
-userRoute.post('/',sessionCheck, async (req, res, next) => {
+userRoute.post('/', sessionCheck, async (req, res, next) => {
   try {
-    // console.log(req.body)
-    req.session.authenticated = true;
-    req.session.save();
-    console.log(req.session)
-    
+
     const { name, selector_id, agree_of_terms, _id } = req.body;
 
     if (name && selector_id && agree_of_terms) {
 
+      //if 
       if (_id) {
         const response = await User.findByIdAndUpdate(_id, {
           name,
           selector_id,
           agree_of_terms,
         }, { returnOriginal: false })
+
         return res.status(200).json({ response: response });
       };
 
@@ -43,6 +41,11 @@ userRoute.post('/',sessionCheck, async (req, res, next) => {
         selector_id
       })
       const response = await selectors.save()
+
+      // set session for users
+      req.session.authenticated = true;
+      req.session.save();
+      console.log(req.session)
 
       res.status(200).json({ response });
     }
