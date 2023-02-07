@@ -6,6 +6,7 @@ function App() {
 
   const [userId, setUserId] = useState('');
   const [sectors, setSectors] = useState([]);
+  const [data, setData] = useState([]);
   const [existData, setExistData] = useState({});
 
   useEffect(() => {
@@ -14,28 +15,54 @@ function App() {
       .then((res) => setSectors(res.responseParent))
       .catch((err) => console.log({ err }))
 
-    fetch('/sectors')
+    fetch('/users')
       .then((res) => res.json())
-      .then((res) => { if (res.response) setExistData(res.response) })
+      .then((res) => {
+        if (res.response) setExistData(res.response);
+        else { console.log({ res }) }
+      })
       .catch((err) => console.log({ err }))
   }, [])
 
-  const data = []
-  sectors?.forEach((section) => {
-    data.push(<option key={section._id} className=' pl-2 md:pl-5 font-bold hover:bg-sky-100 cursor-pointer' value={section.value}>{section.name}</option>);
-    section.childs.length > 0 && section.childs.forEach((child) => {
-      data.push(<option key={child._id} className=' pl-6 md:pl-14 hover:bg-sky-100 cursor-pointer' value={child.value}>{child.name}</option>);
-      child.childs.length > 0 && child.childs.forEach((child) => {
-        data.push(<option key={child._id} className=' pl-12 md:pl-24 hover:bg-sky-100 cursor-pointer' value={child.value}>{child.name}</option>);
+  // const funchilds = (child, index) => {
+  //   console.log(child)
+  //   data.push(<option key={child._id} className=' pl-6 md:pl-14 hover:bg-sky-100 cursor-pointer' value={child.value}>{child.name}</option>);
+  //   child.childs.length > 0 && child.childs.forEach((child) => {
+  //     data.push(<option key={child._id} className={`index pl-${6 * index + 1} md:pl-14 hover:bg-sky-100 cursor-pointer`} value={child.value}>{child.name}</option>);
+  //     funchilds(child)
+  //   });
+  // }
+  // const dynamicChild = (child, index) => {
+  //   child.childs.length > 0 && child.childs.forEach((child) => {
+  //     data.push(<option key={child._id} className={`index pl-${6 * index + 1} md:pl-14 hover:bg-sky-100 cursor-pointer`} value={child.value}>{child.name}</option>);
+  //     // console.log(child.childs.length)
+  //     funchilds(child, index)
+  //   });
+  // }
+  // console.log(data.length)
+  useEffect(() => {
+    const data = []
+    sectors?.forEach((section) => {
+      data.push(<option key={section._id} className=' pl-2 md:pl-5 font-bold hover:bg-sky-100 cursor-pointer' value={section.value}>{section.name}</option>);
+      // section.childs.length > 0 && section.childs.forEach((child, index) => {
+      //   dynamicChild(child, index + 1)
+      section.childs.length > 0 && section.childs.forEach((child) => {
+        data.push(<option key={child._id} className=' pl-6 md:pl-14 hover:bg-sky-100 cursor-pointer' value={child.value}>{child.name}</option>);
         child.childs.length > 0 && child.childs.forEach((child) => {
-          data.push(<option key={child._id} className=' pl-20 md:pl-32 hover:bg-sky-100 cursor-pointer ' value={child.value}>{child.name}</option>);
+          data.push(<option key={child._id} className=' pl-12 md:pl-24 hover:bg-sky-100 cursor-pointer' value={child.value}>{child.name}</option>);
           child.childs.length > 0 && child.childs.forEach((child) => {
-            data.push(<option key={child._id} className=' pl-24 md:pl-40 hover:bg-sky-100 cursor-pointer ' value={child.value}>{child.name}</option>);
+            data.push(<option key={child._id} className=' pl-20 md:pl-32 hover:bg-sky-100 cursor-pointer ' value={child.value}>{child.name}</option>);
+            child.childs.length > 0 && child.childs.forEach((child) => {
+              data.push(<option key={child._id} className=' pl-24 md:pl-40 hover:bg-sky-100 cursor-pointer ' value={child.value}>{child.name}</option>);
+            });
           });
         });
-      });
-    })
-  });
+      })
+    });
+
+    setData(() => data)
+
+  }, [sectors]);
 
   return (
     <>
